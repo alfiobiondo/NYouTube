@@ -15,7 +15,8 @@ const Sidebar = ({ sidebar, handleToggleSidebar }) => {
 	return (
 		<nav
 			className={sidebar ? 'sidebar open' : 'sidebar'}
-			onClick={() => handleToggleSidebar(false)}>
+			onClick={() => handleToggleSidebar(false)}
+		>
 			<li>
 				<MdHome size={23} />
 				<span>Home</span>
@@ -43,7 +44,7 @@ const Sidebar = ({ sidebar, handleToggleSidebar }) => {
 
 			<hr />
 
-			<li>
+			<li className='logout'>
 				<MdExitToApp size={23} />
 				<span>Log Out</span>
 			</li>
