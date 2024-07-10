@@ -1,12 +1,12 @@
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase/app';
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyCKZMKB3Uwf4aWh51138lVjPJg9nN1F-hs',
-	authDomain: 'n-you-tube.firebaseapp.com',
-	projectId: 'n-you-tube',
-	storageBucket: 'n-you-tube.appspot.com',
-	messagingSenderId: '1044462741075',
-	appId: '1:1044462741075:web:66df575e7ffee4eee508a6',
+	apiKey: process.env.REACT_APP_API_KEY,
+	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_APP_ID,
 };
 
 firebase.initializeApp(firebaseConfig);
