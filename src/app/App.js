@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import './_app.scss';
 
-import Header from './components/header/Header';
-import Sidebar from './components/sidebar/Sidebar';
-import HomeScreen from './screens/homeScreen/HomeScreen';
-import LoginScreen from './screens/loginScreen/LoginScreen';
+import Header from '../components/header/Header';
+import Sidebar from '../components/sidebar/Sidebar';
+import HomeScreen from '../screens/homeScreen/HomeScreen';
+import LoginScreen from '../screens/loginScreen/LoginScreen';
 
 import {
 	Route,
