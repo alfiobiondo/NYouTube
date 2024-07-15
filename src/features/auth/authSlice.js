@@ -30,6 +30,7 @@ export const logout = createAsyncThunk(
 const authSlice = createSlice({
 	name: 'auth',
 	initialState: {
+		accessToken: null,
 		user: null,
 		status: 'idle',
 		error: null,
@@ -49,7 +50,11 @@ const authSlice = createSlice({
 			})
 			.addCase(googleLogin.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.user = action.payload;
+				state.user = {
+					name: action.payload.displayName,
+					photoURL: action.payload.photoURL,
+				};
+				state.accessToken = action.payload.stsTokenManager.accessToken;
 			})
 			.addCase(googleLogin.rejected, (state, action) => {
 				state.status = 'failed';
@@ -58,6 +63,7 @@ const authSlice = createSlice({
 			.addCase(logout.fulfilled, (state) => {
 				state.status = 'succeeded';
 				state.user = null;
+				state.accessToken = null;
 			})
 			.addCase(logout.rejected, (state, action) => {
 				state.status = 'failed';

@@ -51,7 +51,7 @@ const Sidebar = ({ sidebar, handleToggleSidebar }) => {
 			<hr />
 
 			<li className='logout'>
-				<MdExitToApp size={23} />
+				<MdExitToApp size={23} onClick={() => dispatch(logout())} />
 				<button onClick={() => dispatch(logout())}>Log Out</button>
 			</li>
 
