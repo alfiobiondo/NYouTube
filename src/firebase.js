@@ -12,6 +12,9 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
+
 const googleProvider = new GoogleAuthProvider();
+
+googleProvider.addScope('https://www.googleapis.com/auth/youtube.force-ssl');
 
 export { auth, googleProvider, firebaseApp };

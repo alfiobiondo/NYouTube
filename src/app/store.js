@@ -32,7 +32,7 @@ const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-				ignoredPaths: ['auth.user'],
+				ignoredPaths: ['auth.user', 'vdeos'],
 			},
 		}).concat((store) => (next) => (action) => {
 			if (action.type === logout.fulfilled.type) {
