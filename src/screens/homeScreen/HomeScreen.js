@@ -7,7 +7,7 @@ import Video from '../../components/video/Video';
 
 import { useDispatch } from 'react-redux';
 
-import { getPopularVideos } from '../../features/video/videoSlice';
+import { getPopularVideos } from '../../features/videos/videosSlice';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();

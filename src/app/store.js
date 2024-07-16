@@ -13,15 +13,17 @@ import {
 import sessionStorage from 'redux-persist/lib/storage/session';
 
 import authReducer, { logout } from '../features/auth/authSlice';
+import videosReducer from '../features/videos/videosSlice';
 
 const persistConfig = {
 	key: 'root',
 	storage: sessionStorage,
-	whitelist: ['auth'],
+	whitelist: ['auth', 'videos'],
 };
 
 const rootReducer = combineReducers({
 	auth: authReducer,
+	homeVideos: videosReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,7 +34,7 @@ const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-				ignoredPaths: ['auth.user', 'vdeos'],
+				ignoredPaths: ['auth.user', 'videos'],
 			},
 		}).concat((store) => (next) => (action) => {
 			if (action.type === logout.fulfilled.type) {

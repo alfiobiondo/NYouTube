@@ -6,9 +6,9 @@ export const getPopularVideos = createAsyncThunk(
 	'video/getVideos',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await request.get('/videos', {
+			const response = await request.get('videos', {
 				params: {
-					part: 'snippet, contentDetails, statistics',
+					part: 'snippet,contentDetails,statistics',
 					chart: 'mostPopular',
 					regionCode: 'IT',
 					maxResults: 20,
@@ -22,10 +22,11 @@ export const getPopularVideos = createAsyncThunk(
 	}
 );
 
-const videoSlice = createSlice({
-	name: 'video',
+const videosSlice = createSlice({
+	name: 'videos',
 	initialState: {
 		videos: [],
+		nextPageToken: null,
 		isLoading: false,
 		error: null,
 	},
@@ -37,7 +38,8 @@ const videoSlice = createSlice({
 			})
 			.addCase(getPopularVideos.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.videos = action.payload;
+				state.videos = action.payload.items;
+				state.nextPageToken = action.payload.nextPageToken;
 			})
 			.addCase(getPopularVideos.rejected, (state, action) => {
 				state.isLoading = false;
@@ -46,4 +48,4 @@ const videoSlice = createSlice({
 	},
 });
 
-export default videoSlice.reducer;
+export default videosSlice.reducer;
