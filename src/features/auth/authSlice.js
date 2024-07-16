@@ -1,14 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
 import { auth, googleProvider } from '../../firebase';
 import { signInWithPopup, signOut } from 'firebase/auth';
+
+import { REHYDRATE } from 'redux-persist/es/constants';
 
 // Async thunk for Google login
 export const googleLogin = createAsyncThunk(
 	'auth/googleLogin',
 	async (_, { rejectWithValue }) => {
 		try {
+			googleProvider.setCustomParameters({ prompt: 'select_account' });
+
 			const result = await signInWithPopup(auth, googleProvider);
-			return result.user;
+			const { displayName, photoURL, stsTokenManager } = result.user;
+			return {
+				displayName,
+				photoURL,
+				accessToken: stsTokenManager.accessToken,
+			};
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -54,7 +64,7 @@ const authSlice = createSlice({
 					name: action.payload.displayName,
 					photoURL: action.payload.photoURL,
 				};
-				state.accessToken = action.payload.stsTokenManager.accessToken;
+				state.accessToken = action.payload.accessToken;
 			})
 			.addCase(googleLogin.rejected, (state, action) => {
 				state.status = 'failed';
@@ -68,6 +78,14 @@ const authSlice = createSlice({
 			.addCase(logout.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.payload;
+			})
+			.addCase(REHYDRATE, (state, action) => {
+				if (action.payload && action.payload.auth) {
+					state.user = action.payload.auth.user;
+					state.accessToken = action.payload.auth.accessToken;
+					state.status = 'idle';
+					state.error = null;
+				}
 			});
 	},
 });

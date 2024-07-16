@@ -19,18 +19,11 @@
 		margin: 0.2rem 0;
 		cursor: pointer;
 
-		span,
-		button {
+		span {
 			margin-left: 1rem;
 			font-size: 14px;
 			font-weight: 500;
 			letter-spacing: 0.4px;
-		}
-
-		button {
-			background: none;
-			color: $text-color;
-			border: none;
 		}
 
 		&:hover {
@@ -59,8 +52,7 @@
 			justify-content: center;
 		}
 
-		span,
-		button {
+		span {
 			display: none;
 		}
 	}

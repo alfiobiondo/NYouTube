@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-	const { accessToken, status } = useSelector((state) => state.auth);
+	const { accessToken } = useSelector((state) => state.auth);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
 		}
 	}, [accessToken, navigate]);
 
-	return children;
+	return <>{children}</>;
 };
 
 export default ProtectedRoute;
