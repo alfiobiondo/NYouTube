@@ -6,7 +6,7 @@ export const getPopularVideos = createAsyncThunk(
 	'video/getVideos',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await request.get('videos', {
+			const response = await request.get('/videos', {
 				params: {
 					part: 'snippet,contentDetails,statistics',
 					chart: 'mostPopular',

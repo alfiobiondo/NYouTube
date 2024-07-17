@@ -30,7 +30,6 @@ const Video = ({ video }) => {
 						id: id,
 					},
 				});
-				console.log(items);
 				setDuration(items[0].contentDetails.duration);
 				setViews(items[0].statistics.viewCount);
 			} catch (error) {
