@@ -1,32 +1,87 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './_video.scss';
 
 import { AiFillEye } from 'react-icons/ai';
+import request from '../../api';
 
-const Video = () => {
+import moment from 'moment';
+import numeral from 'numeral';
+
+const Video = ({ video }) => {
+	const {
+		id,
+		snippet: {
+			channelId,
+			channelTitle,
+			title,
+			publishedAt,
+			thumbnails: { medium },
+		},
+	} = video;
+
+	useEffect(() => {
+		const get_video_details = async () => {
+			try {
+				const {
+					data: { items },
+				} = await request.get('/videos', {
+					params: {
+						part: 'contentDetails,statistics',
+						id: id,
+					},
+				});
+				console.log(items);
+				setDuration(items[0].contentDetails.duration);
+				setViews(items[0].statistics.viewCount);
+			} catch (error) {
+				console.error('Error fetching video details:', error);
+			}
+		};
+		get_video_details();
+	}, [id]);
+
+	useEffect(() => {
+		const get_channel_icon = async () => {
+			try {
+				const {
+					data: { items },
+				} = await request.get('/channels', {
+					params: {
+						part: 'snippet',
+						id: channelId,
+					},
+				});
+				setChannelIcon(items[0].snippet.thumbnails.default);
+			} catch (error) {
+				console.error('Error fetching video details:', error);
+			}
+		};
+		get_channel_icon();
+	}, [channelId]);
+
+	const [views, setViews] = useState(null);
+	const [duration, setDuration] = useState(null);
+	const [channelIcon, setChannelIcon] = useState(null);
+
+	const seconds = moment.duration(duration).asSeconds();
+	const _duration = moment.utc(seconds * 1000).format('mm:ss');
+
 	return (
 		<section className='video'>
 			<section className='video__top'>
-				<img
-					src='https://i.ytimg.com/vi/tL8wVb_c3AE/hqdefault.jpg?s…AFwAcABBg==&rs=AOn4CLAxI8ogiTZawR-fpL3cnSnIydPpug'
-					alt=''
-				/>
-				<span>03:00</span>
+				<img src={medium.url} alt={title} />
+				<span>{_duration}</span>
 			</section>
-			<section className='video__title'>
-				Living Through Palanzano #made by Alfio
-			</section>
+			<section className='video__title'>{title}</section>
 			<section className='video__details'>
 				<span>
-					<AiFillEye /> 383 Views · 12 years ago
+					<AiFillEye /> {numeral(views).format('0.a')} Views ·
 				</span>
+				<span>{moment(publishedAt).fromNow()}</span>
 			</section>
 			<section className='video__channel'>
-				<img
-					src='https://yt3.ggpht.com/ytc/AIdro_kTEDv60zMpXGwcTPDWE0ktYRQdqzsmBL2M86sFDflC2Z8=s48-c-k-c0x00ffffff-no-rj'
-					alt=''
-				/>
-				<p>Alfio Biondo</p>
+				<img src={channelIcon?.url} alt={channelTitle} />
+				<p>{channelTitle}</p>
 			</section>
 		</section>
 	);
