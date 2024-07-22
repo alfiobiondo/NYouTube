@@ -7,7 +7,11 @@ import request from '../../api';
 import moment from 'moment';
 import numeral from 'numeral';
 
-const Video = ({ video }) => {
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
+import { useNavigate } from 'react-router-dom';
+
+const Video = ({ video, channelScreen }) => {
 	const {
 		id,
 		snippet: {
@@ -17,7 +21,19 @@ const Video = ({ video }) => {
 			publishedAt,
 			thumbnails: { medium },
 		},
+		contentDetails,
 	} = video;
+
+	const [views, setViews] = useState(null);
+	const [duration, setDuration] = useState(null);
+	const [channelIcon, setChannelIcon] = useState(null);
+
+	const seconds = moment.duration(duration).asSeconds();
+	const _duration = moment.utc(seconds * 1000).format('mm:ss');
+
+	const _videoId = id?.videoId || contentDetails?.videoId || id;
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const get_video_details = async () => {
@@ -27,7 +43,7 @@ const Video = ({ video }) => {
 				} = await request.get('/videos', {
 					params: {
 						part: 'contentDetails,statistics',
-						id: id,
+						id: _videoId,
 					},
 				});
 				setDuration(items[0].contentDetails.duration);
@@ -37,7 +53,7 @@ const Video = ({ video }) => {
 			}
 		};
 		get_video_details();
-	}, [id]);
+	}, [_videoId]);
 
 	useEffect(() => {
 		const get_channel_icon = async () => {
@@ -58,17 +74,15 @@ const Video = ({ video }) => {
 		get_channel_icon();
 	}, [channelId]);
 
-	const [views, setViews] = useState(null);
-	const [duration, setDuration] = useState(null);
-	const [channelIcon, setChannelIcon] = useState(null);
-
-	const seconds = moment.duration(duration).asSeconds();
-	const _duration = moment.utc(seconds * 1000).format('mm:ss');
+	const handleVideoClick = () => {
+		navigate(`/watch/${_videoId}`);
+	};
 
 	return (
-		<section className='video'>
+		<section className='video' onClick={handleVideoClick}>
 			<section className='video__top'>
-				<img src={medium.url} alt={title} />
+				{/* <img src={medium.url} alt={title} /> */}
+				<LazyLoadImage src={medium.url} effect='blur' />
 				<span>{_duration}</span>
 			</section>
 			<section className='video__title'>{title}</section>
@@ -79,7 +93,8 @@ const Video = ({ video }) => {
 				<span>{moment(publishedAt).fromNow()}</span>
 			</section>
 			<section className='video__channel'>
-				<img src={channelIcon?.url} alt={channelTitle} />
+				{/* <img src={channelIcon?.url} alt={channelTitle} /> */}
+				<LazyLoadImage src={channelIcon?.url} effect='blur' />
 				<p>{channelTitle}</p>
 			</section>
 		</section>
