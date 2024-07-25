@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../src/app/store';
 
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './_base.scss';

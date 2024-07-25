@@ -1,13 +1,19 @@
 import React, { useEffect } from 'react';
 
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 
 import CategoriesBar from '../../components/categoriesBar/CategoriesBar';
 import Video from '../../components/video/Video';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPopularVideos } from '../../features/videos/videosSlice';
+import {
+	getPopularVideos,
+	getVideosByCategory,
+} from '../../features/videos/videosSlice';
+
+import InfiniteScroll from 'react-infinite-scroll-component';
+import SkeletonVideo from '../../components/skeletons/SkeletonVideo';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -15,18 +21,46 @@ const HomeScreen = () => {
 		dispatch(getPopularVideos());
 	}, [dispatch]);
 
-	const { videos } = useSelector((state) => state.homeVideos);
+	const { videos, activeCategory, isLoading, nextPageToken } = useSelector(
+		(state) => state.homeVideos
+	);
+
+	const fetchVideos = () => {
+		if (activeCategory === 'All') {
+			dispatch(getPopularVideos());
+		} else {
+			dispatch(getVideosByCategory(activeCategory));
+		}
+	};
 
 	return (
 		<Container>
 			<CategoriesBar />
-			<Row>
-				{videos.map((video) => (
-					<Col lg={3} md={4}>
-						<Video video={video} key={video.id} />
-					</Col>
-				))}
-			</Row>
+			<InfiniteScroll
+				dataLength={videos.length}
+				next={fetchVideos}
+				hasMore={!!nextPageToken}
+				loader={
+					<section className='spinner-border text-danger d-block mx-auto'></section>
+				}
+				className='row'
+			>
+				{!isLoading
+					? videos.map((video, index) => (
+							<Col
+								lg={3}
+								md={4}
+								key={`${video.id.videoId || video.id}-${index}`}
+							>
+								<Video video={video} />
+							</Col>
+						))
+					: [...Array(20)].map((_, index) => (
+							<Col lg={3} md={4} key={index}>
+								<SkeletonVideo />
+							</Col>
+						))}
+			</InfiniteScroll>
 		</Container>
 	);
 };

@@ -83,7 +83,7 @@ const Video = ({ video, channelScreen }) => {
 			<section className='video__top'>
 				{/* <img src={medium.url} alt={title} /> */}
 				<LazyLoadImage src={medium.url} effect='blur' />
-				<span>{_duration}</span>
+				<span className='video__top__duration'>{_duration}</span>
 			</section>
 			<section className='video__title'>{title}</section>
 			<section className='video__details'>

@@ -4,7 +4,7 @@ import request from '../../api';
 
 export const getPopularVideos = createAsyncThunk(
 	'video/getVideos',
-	async (_, { rejectWithValue }) => {
+	async (_, { rejectWithValue, getState }) => {
 		try {
 			const response = await request.get('/videos', {
 				params: {
@@ -12,7 +12,7 @@ export const getPopularVideos = createAsyncThunk(
 					chart: 'mostPopular',
 					regionCode: 'IT',
 					maxResults: 20,
-					pageToken: '',
+					pageToken: getState().homeVideos.nextPageToken,
 				},
 			});
 			return response.data;
@@ -29,14 +29,12 @@ export const getVideosByCategory = createAsyncThunk(
 			const response = await request.get('/search', {
 				params: {
 					part: 'snippet',
-
 					maxResults: 20,
 					pageToken: getState().homeVideos.nextPageToken,
 					q: keyword,
 					type: 'video',
 				},
 			});
-			console.log(response.data);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(error.message);
@@ -54,7 +52,6 @@ export const getVideosById = createAsyncThunk(
 					id: id,
 				},
 			});
-			console.log(response.data);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(error.message);
@@ -67,14 +64,15 @@ const videosSlice = createSlice({
 	initialState: {
 		videos: [],
 		nextPageToken: null,
-		category: 'All',
+		activeCategory: 'All',
 		isLoading: false,
 		error: null,
 	},
 	reducers: {
 		setCategory: (state, action) => {
-			state.category = action.payload;
+			state.activeCategory = action.payload;
 			state.nextPageToken = null;
+			state.videos = [];
 		},
 	},
 	extraReducers: (builder) => {
@@ -84,7 +82,7 @@ const videosSlice = createSlice({
 			})
 			.addCase(getPopularVideos.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.videos = action.payload.items;
+				state.videos = [...state.videos, ...action.payload.items];
 				state.nextPageToken = action.payload.nextPageToken;
 			})
 			.addCase(getPopularVideos.rejected, (state, action) => {
