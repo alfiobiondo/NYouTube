@@ -1,35 +1,39 @@
 import React, { useEffect } from 'react';
-
 import { Col, Container } from 'react-bootstrap';
-
 import CategoriesBar from '../../components/categoriesBar/CategoriesBar';
 import Video from '../../components/video/Video';
-
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
 	getPopularVideos,
 	getVideosByCategory,
 } from '../../features/videos/videosSlice';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SkeletonVideo from '../../components/skeletons/SkeletonVideo';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
-	useEffect(() => {
-		dispatch(getPopularVideos());
-	}, [dispatch]);
 
 	const { videos, activeCategory, isLoading, nextPageToken } = useSelector(
 		(state) => state.homeVideos
 	);
 
-	const fetchVideos = () => {
+	useEffect(() => {
+		console.log('Fetching initial videos');
 		if (activeCategory === 'All') {
 			dispatch(getPopularVideos());
 		} else {
 			dispatch(getVideosByCategory(activeCategory));
+		}
+	}, [dispatch, activeCategory]);
+
+	const fetchVideos = () => {
+		console.log('Fetching more videos');
+		if (nextPageToken) {
+			if (activeCategory === 'All') {
+				dispatch(getPopularVideos());
+			} else {
+				dispatch(getVideosByCategory(activeCategory));
+			}
 		}
 	};
 
@@ -41,9 +45,10 @@ const HomeScreen = () => {
 				next={fetchVideos}
 				hasMore={!!nextPageToken}
 				loader={
-					<section className='spinner-border text-danger d-block mx-auto'></section>
+					<div className='spinner-border text-danger d-block mx-auto'></div>
 				}
 				className='row'
+				scrollThreshold={0.9}
 			>
 				{!isLoading
 					? videos.map((video, index) => (

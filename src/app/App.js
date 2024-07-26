@@ -4,6 +4,7 @@ import HomeScreen from '../screens/homeScreen/HomeScreen';
 import LoginScreen from '../screens/loginScreen/LoginScreen';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
+import WatchScreen from '../screens/watchScreen/WatchScreen';
 
 import {
 	Route,
@@ -40,6 +41,16 @@ const router = createBrowserRouter(
 					<ProtectedRoute>
 						<Layout>
 							<h1>Search</h1>
+						</Layout>
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path='/watch/:id'
+				element={
+					<ProtectedRoute>
+						<Layout>
+							<WatchScreen />
 						</Layout>
 					</ProtectedRoute>
 				}

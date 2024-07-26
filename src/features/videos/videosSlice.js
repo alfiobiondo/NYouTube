@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
 import request from '../../api';
 
 export const getPopularVideos = createAsyncThunk(
@@ -17,6 +16,10 @@ export const getPopularVideos = createAsyncThunk(
 			});
 			return response.data;
 		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -35,8 +38,12 @@ export const getVideosByCategory = createAsyncThunk(
 					type: 'video',
 				},
 			});
-			return response.data;
+			return { data: response.data, keyword };
 		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -54,6 +61,10 @@ export const getVideosById = createAsyncThunk(
 			});
 			return response.data;
 		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
 			return rejectWithValue(error.message);
 		}
 	}
@@ -94,8 +105,13 @@ const videosSlice = createSlice({
 			})
 			.addCase(getVideosByCategory.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.videos = action.payload.items;
-				state.nextPageToken = action.payload.nextPageToken;
+				if (state.activeCategory === action.payload.keyword) {
+					state.videos = [...state.videos, ...action.payload.data.items];
+					state.nextPageToken = action.payload.data.nextPageToken;
+				} else {
+					state.videos = action.payload.data.items;
+					state.nextPageToken = action.payload.data.nextPageToken;
+				}
 			})
 			.addCase(getVideosByCategory.rejected, (state, action) => {
 				state.isLoading = false;
