@@ -3,11 +3,7 @@ import './_categoriesBar.scss';
 
 import { useDispatch } from 'react-redux';
 
-import {
-	getPopularVideos,
-	getVideosByCategory,
-	setCategory,
-} from '../../features/videos/videosSlice';
+import { setCategory } from '../../features/videos/videosSlice';
 
 const keywords = [
 	'All',
@@ -35,11 +31,6 @@ const CategoriesBar = () => {
 	const handleClick = (value) => {
 		setActiveElement(value);
 		dispatch(setCategory(value));
-		if (value === 'All') {
-			dispatch(getPopularVideos());
-		} else {
-			dispatch(getVideosByCategory(value));
-		}
 	};
 
 	return (

@@ -27,14 +27,7 @@ const router = createBrowserRouter(
 					</ProtectedRoute>
 				}
 			/>
-			<Route
-				path='/auth'
-				element={
-					<>
-						<LoginScreen />
-					</>
-				}
-			/>
+			<Route path='/auth' element={<LoginScreen />} />
 			<Route
 				path='/search'
 				element={

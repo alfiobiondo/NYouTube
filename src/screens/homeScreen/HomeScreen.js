@@ -43,12 +43,11 @@ const HomeScreen = () => {
 			<InfiniteScroll
 				dataLength={videos.length}
 				next={fetchVideos}
-				hasMore={!!nextPageToken}
+				hasMore={true}
 				loader={
 					<div className='spinner-border text-danger d-block mx-auto'></div>
 				}
 				className='row'
-				scrollThreshold={0.9}
 			>
 				{!isLoading
 					? videos.map((video, index) => (

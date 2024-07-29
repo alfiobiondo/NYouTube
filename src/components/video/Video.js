@@ -37,6 +37,7 @@ const Video = ({ video, channelScreen }) => {
 
 	useEffect(() => {
 		const get_video_details = async () => {
+			console.log('Fetching video details');
 			try {
 				const {
 					data: { items },
@@ -57,6 +58,7 @@ const Video = ({ video, channelScreen }) => {
 
 	useEffect(() => {
 		const get_channel_icon = async () => {
+			console.log('Fetching channel icons');
 			try {
 				const {
 					data: { items },

@@ -4,6 +4,7 @@ import request from '../../api';
 export const getPopularVideos = createAsyncThunk(
 	'video/getVideos',
 	async (_, { rejectWithValue, getState }) => {
+		console.log('Fetching popular videos');
 		try {
 			const response = await request.get('/videos', {
 				params: {
@@ -28,6 +29,7 @@ export const getPopularVideos = createAsyncThunk(
 export const getVideosByCategory = createAsyncThunk(
 	'video/getVideoByCategory',
 	async (keyword, { rejectWithValue, getState }) => {
+		console.log('Fetching videos by category');
 		try {
 			const response = await request.get('/search', {
 				params: {
