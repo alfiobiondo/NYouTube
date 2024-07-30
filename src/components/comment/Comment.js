@@ -2,20 +2,18 @@ import React from 'react';
 import moment from 'moment';
 import './_comment.scss';
 
-const Comment = () => {
+const Comment = ({ comment }) => {
+	const { authorDisplayName, authorProfileImageUrl, publishedAt, textDisplay } =
+		comment;
+
 	return (
-		<section className='comment p-2 d-flex'>
-			<img
-				src='https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'
-				alt=''
-				className='rounded-circle me-3'
-			/>
+		<section className='p-2 comment d-flex'>
+			<img src={authorProfileImageUrl} alt='' className='me-3 rounded-circle' />
 			<section className='comment__body'>
 				<p className='comment__header mb-1'>
-					{' '}
-					Alfio Biondo • {moment('2024-07-26').fromNow()}
+					{authorDisplayName} • {moment(publishedAt).fromNow()}
 				</p>
-				<p className='mb-0'>Nice Video DUDE!!!</p>
+				<p className='mb-0'>{textDisplay}</p>
 			</section>
 		</section>
 	);

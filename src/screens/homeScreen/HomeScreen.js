@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	getPopularVideos,
 	getVideosByCategory,
-} from '../../features/videos/videosSlice';
+} from '../../features/videos/homeVideosSlice';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SkeletonVideo from '../../components/skeletons/SkeletonVideo';
 
@@ -19,12 +19,8 @@ const HomeScreen = () => {
 
 	useEffect(() => {
 		console.log('Fetching initial videos');
-		if (activeCategory === 'All') {
-			dispatch(getPopularVideos());
-		} else {
-			dispatch(getVideosByCategory(activeCategory));
-		}
-	}, [dispatch, activeCategory]);
+		dispatch(getPopularVideos());
+	}, [dispatch]);
 
 	const fetchVideos = () => {
 		console.log('Fetching more videos');
@@ -43,25 +39,26 @@ const HomeScreen = () => {
 			<InfiniteScroll
 				dataLength={videos.length}
 				next={fetchVideos}
-				hasMore={true}
+				hasMore={!!nextPageToken}
 				loader={
 					<div className='spinner-border text-danger d-block mx-auto'></div>
 				}
 				className='row'
 			>
-				{!isLoading
-					? videos.map((video, index) => (
+				{isLoading && videos.length === 0
+					? // Show skeletons if loading and no videos are loaded yet
+						[...Array(20)].map((_, index) => (
+							<Col lg={3} md={4} key={index}>
+								<SkeletonVideo />
+							</Col>
+						))
+					: videos.map((video, index) => (
 							<Col
 								lg={3}
 								md={4}
 								key={`${video.id.videoId || video.id}-${index}`}
 							>
 								<Video video={video} />
-							</Col>
-						))
-					: [...Array(20)].map((_, index) => (
-							<Col lg={3} md={4} key={index}>
-								<SkeletonVideo />
 							</Col>
 						))}
 			</InfiniteScroll>

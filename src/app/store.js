@@ -13,17 +13,25 @@ import {
 import sessionStorage from 'redux-persist/lib/storage/session';
 
 import authReducer, { logout } from '../features/auth/authSlice';
-import videosReducer from '../features/videos/videosSlice';
+import homeVideosReducer from '../features/videos/homeVideosSlice';
+import selectedVideoReducer from '../features/videos/selectedVideoSlice';
+import relatedVideosReducer from '../features/videos/relatedVideosSlice';
+import channelReducer from '../features/channels/channelsSlice';
+import commentsReducer from '../features/comments/commentsSlice';
 
 const persistConfig = {
 	key: 'root',
 	storage: sessionStorage,
-	whitelist: ['auth', 'videos'],
+	whitelist: ['auth', 'homeVideos', 'channelDetails', 'commentList'],
 };
 
 const rootReducer = combineReducers({
 	auth: authReducer,
-	homeVideos: videosReducer,
+	homeVideos: homeVideosReducer,
+	selectedVideo: selectedVideoReducer,
+	relatedVideos: relatedVideosReducer,
+	channelDetails: channelReducer,
+	commentList: commentsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -34,7 +42,14 @@ const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-				ignoredPaths: ['auth', 'videos'],
+				ignoredPaths: [
+					'auth',
+					'homeVideos',
+					'selectedVideo',
+					'relatedVideos',
+					'channelDetails',
+					'commentList',
+				],
 			},
 		}).concat((store) => (next) => (action) => {
 			if (action.type === logout.fulfilled.type) {

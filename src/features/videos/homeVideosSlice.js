@@ -1,8 +1,9 @@
+// features/videos/homeVideosSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import request from '../../api';
 
 export const getPopularVideos = createAsyncThunk(
-	'video/getVideos',
+	'homeVideos/getPopularVideos',
 	async (_, { rejectWithValue, getState }) => {
 		console.log('Fetching popular videos');
 		try {
@@ -27,7 +28,7 @@ export const getPopularVideos = createAsyncThunk(
 );
 
 export const getVideosByCategory = createAsyncThunk(
-	'video/getVideoByCategory',
+	'homeVideos/getVideosByCategory',
 	async (keyword, { rejectWithValue, getState }) => {
 		console.log('Fetching videos by category');
 		try {
@@ -51,29 +52,8 @@ export const getVideosByCategory = createAsyncThunk(
 	}
 );
 
-export const getVideosById = createAsyncThunk(
-	'video/getVideoById',
-	async (id, { rejectWithValue }) => {
-		try {
-			const response = await request.get('/videos', {
-				params: {
-					part: 'snippet,statistics',
-					id: id,
-				},
-			});
-			return response.data;
-		} catch (error) {
-			console.error(
-				'API Error:',
-				error.response ? error.response.data : error.message
-			);
-			return rejectWithValue(error.message);
-		}
-	}
-);
-
-const videosSlice = createSlice({
-	name: 'videos',
+const homeVideosSlice = createSlice({
+	name: 'homeVideos',
 	initialState: {
 		videos: [],
 		nextPageToken: null,
@@ -107,32 +87,16 @@ const videosSlice = createSlice({
 			})
 			.addCase(getVideosByCategory.fulfilled, (state, action) => {
 				state.isLoading = false;
-				if (state.activeCategory === action.payload.keyword) {
-					state.videos = [...state.videos, ...action.payload.data.items];
-					state.nextPageToken = action.payload.data.nextPageToken;
-				} else {
-					state.videos = action.payload.data.items;
-					state.nextPageToken = action.payload.data.nextPageToken;
-				}
+				state.videos = [...state.videos, ...action.payload.data.items];
+				state.nextPageToken = action.payload.data.nextPageToken;
 			})
 			.addCase(getVideosByCategory.rejected, (state, action) => {
-				state.isLoading = false;
-				state.error = action.payload;
-			})
-			.addCase(getVideosById.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(getVideosById.fulfilled, (state, action) => {
-				state.isLoading = false;
-				state.videos = action.payload.items;
-			})
-			.addCase(getVideosById.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload;
 			});
 	},
 });
 
-export const { setCategory } = videosSlice.actions;
+export const { setCategory } = homeVideosSlice.actions;
 
-export default videosSlice.reducer;
+export default homeVideosSlice.reducer;

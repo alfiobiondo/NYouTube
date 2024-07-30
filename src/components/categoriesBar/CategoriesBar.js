@@ -3,7 +3,10 @@ import './_categoriesBar.scss';
 
 import { useDispatch } from 'react-redux';
 
-import { setCategory } from '../../features/videos/videosSlice';
+import {
+	getVideosByCategory,
+	setCategory,
+} from '../../features/videos/homeVideosSlice';
 
 const keywords = [
 	'All',
@@ -29,8 +32,12 @@ const CategoriesBar = () => {
 	const dispatch = useDispatch();
 
 	const handleClick = (value) => {
+		console.log(
+			`Clicked on ${value}, active element is ${activeElement}, fetching videos from category ${value}`
+		);
 		setActiveElement(value);
 		dispatch(setCategory(value));
+		dispatch(getVideosByCategory(value));
 	};
 
 	return (
