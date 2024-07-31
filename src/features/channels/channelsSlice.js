@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
 import request from '../../api';
 
 export const getChannelDetails = createAsyncThunk(
@@ -12,7 +11,7 @@ export const getChannelDetails = createAsyncThunk(
 					id,
 				},
 			});
-			return response.data;
+			return response.data.items[0];
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -22,6 +21,11 @@ export const getChannelDetails = createAsyncThunk(
 export const checkSubscriptionStatus = createAsyncThunk(
 	'channels/checkSubscriptionStatus',
 	async (id, { rejectWithValue, getState }) => {
+		const { accessToken } = getState().auth;
+		if (!accessToken) {
+			return rejectWithValue('No access token available');
+		}
+
 		try {
 			const response = await request.get('/subscriptions', {
 				params: {
@@ -30,10 +34,10 @@ export const checkSubscriptionStatus = createAsyncThunk(
 					mine: true,
 				},
 				headers: {
-					Authorization: `Bearer ${getState().auth.accessToken}`,
+					Authorization: `Bearer ${accessToken}`,
 				},
 			});
-			return response.data;
+			return response.data.items.length !== 0;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -50,7 +54,7 @@ const channelsSlice = createSlice({
 	},
 	reducers: {
 		setSubscriptionStatus: (state, action) => {
-			state.subscriptionStatus = action.payload.items.length !== 0;
+			state.subscriptionStatus = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
@@ -60,7 +64,7 @@ const channelsSlice = createSlice({
 			})
 			.addCase(getChannelDetails.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.channel = action.payload.items[0];
+				state.channel = action.payload;
 			})
 			.addCase(getChannelDetails.rejected, (state, action) => {
 				state.isLoading = false;
@@ -72,7 +76,7 @@ const channelsSlice = createSlice({
 			})
 			.addCase(checkSubscriptionStatus.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.subscriptionStatus = action.payload.items.length > 0;
+				state.subscriptionStatus = action.payload;
 			})
 			.addCase(checkSubscriptionStatus.rejected, (state, action) => {
 				state.isLoading = false;

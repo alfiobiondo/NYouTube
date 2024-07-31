@@ -27,7 +27,7 @@ export const getRelatedVideos = createAsyncThunk(
 const relatedVideosSlice = createSlice({
 	name: 'relatedVideos',
 	initialState: {
-		videos: [],
+		videos: [], // Ensure videos is an array initially
 		isLoading: false,
 		error: null,
 	},

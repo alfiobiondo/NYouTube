@@ -15,15 +15,19 @@ const WatchScreen = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		console.log('Fetching videobyId');
-		dispatch(getVideosById(id));
-		dispatch(getRelatedVideos(id));
+		if (id) {
+			dispatch(getVideosById(id));
+			dispatch(getRelatedVideos(id));
+		}
 	}, [dispatch, id]);
 
-	const { videos, isLoading: relatedVideosLoading } = useSelector(
-		(state) => state.relatedVideo
-	);
-	const { video, isLoading } = useSelector((state) => state.selectedVideo);
+	const { videos, isLoading: relatedVideosLoading } = useSelector((state) => {
+		return state.relatedVideos || { videos: [], isLoading: true, error: null };
+	});
+
+	const { video, isLoading } = useSelector((state) => {
+		return state.selectedVideo || { video: null, isLoading: true, error: null };
+	});
 
 	return (
 		<Row>
@@ -39,10 +43,12 @@ const WatchScreen = () => {
 					></iframe>
 				</section>
 
-				{!isLoading ? (
+				{isLoading ? (
+					<h6>Loading...</h6>
+				) : video ? (
 					<VideoMetaData video={video} videoId={id} />
 				) : (
-					<h6>Loading...</h6>
+					<h6>Error loading video metadata</h6>
 				)}
 
 				<Comments
@@ -51,16 +57,18 @@ const WatchScreen = () => {
 				/>
 			</Col>
 			<Col lg={4}>
-				{!isLoading ? (
+				{relatedVideosLoading ? (
+					<SkeletonTheme color='#343a40' highlightColor='#3c4147'>
+						<Skeleton width='100%' height='130px' count={15} />
+					</SkeletonTheme>
+				) : videos.length ? (
 					videos
-						?.filter((video) => video.snippet)
+						.filter((video) => video.snippet)
 						.map((video) => (
 							<VideoHorizontal video={video} key={video.id.videoId} />
 						))
 				) : (
-					<SkeletonTheme color='#343a40' highlightColor='#3c4147'>
-						<Skeleton width='100%' height='130px' count={15} />
-					</SkeletonTheme>
+					<h6>No related videos found</h6>
 				)}
 			</Col>
 		</Row>
