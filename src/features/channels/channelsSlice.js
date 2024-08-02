@@ -21,7 +21,7 @@ export const getChannelDetails = createAsyncThunk(
 export const checkSubscriptionStatus = createAsyncThunk(
 	'channels/checkSubscriptionStatus',
 	async (id, { rejectWithValue, getState }) => {
-		const { accessToken } = getState().auth;
+		const accessToken = getState().auth.accessToken;
 		if (!accessToken) {
 			return rejectWithValue('No access token available');
 		}

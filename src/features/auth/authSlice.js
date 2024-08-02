@@ -13,11 +13,14 @@ export const googleLogin = createAsyncThunk(
 			googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 			const result = await signInWithPopup(auth, googleProvider);
-			const { displayName, photoURL, stsTokenManager } = result.user;
+			console.log(result);
+			console.log(result.user);
+			const { displayName, photoURL } = result.user;
+			const accessToken = result._tokenResponse.oauthAccessToken;
 			return {
 				displayName,
 				photoURL,
-				accessToken: stsTokenManager.accessToken,
+				accessToken,
 			};
 		} catch (error) {
 			return rejectWithValue(error.message);

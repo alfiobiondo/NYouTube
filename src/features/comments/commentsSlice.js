@@ -51,7 +51,7 @@ export const addComment = createAsyncThunk(
 			});
 
 			// Delay to allow the new comment to propagate
-			setTimeout(() => dispatch(getCommentsOfVideoById(id)), 3000);
+			setTimeout(() => dispatch(getCommentsOfVideoById(id)), 5000);
 			return response.data;
 		} catch (error) {
 			console.error('Error adding comment:', error);

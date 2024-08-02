@@ -24,7 +24,7 @@ const Comments = ({ videoId, totalComments }) => {
 	const handleComment = (e) => {
 		e.preventDefault();
 		if (text.length === 0) return;
-		dispatch(addComment(videoId, text));
+		dispatch(addComment({ id: videoId, text }));
 		setText('');
 	};
 
