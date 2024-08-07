@@ -48,7 +48,7 @@ const SearchScreen = () => {
 					: videos?.map((video, index) => (
 							<VideoHorizontal
 								video={video}
-								key={`${video.id.videoId || video.id}-${index}`}
+								key={`${video.id.videoId}-${index}`}
 								searchScreen
 							/>
 						))}

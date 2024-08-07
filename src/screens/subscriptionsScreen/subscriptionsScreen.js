@@ -38,7 +38,7 @@ const SubscriptionsScreen = () => {
 			>
 				{isLoading && videos.length === 0
 					? // Show skeletons if loading and no videos are loaded yet
-						[...Array(20)].map((_, index) => (
+						[...Array(20)].map((_) => (
 							<SkeletonTheme color='#343a40' highlightColor='#3c4147'>
 								<Skeleton width='100%' height='160px' count={20} />
 							</SkeletonTheme>
