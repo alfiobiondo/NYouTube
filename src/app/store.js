@@ -18,11 +18,24 @@ import selectedVideoReducer from '../features/videos/selectedVideoSlice';
 import relatedVideosReducer from '../features/videos/relatedVideosSlice';
 import channelReducer from '../features/channels/channelsSlice';
 import commentsReducer from '../features/comments/commentsSlice';
+import searchedVideosReducer from '../features/videos/searchedVideoSlice';
+import subscriptionsChannelReducer from '../features/subscriptions/subscribedChannelsSlice';
+import channelVideosReducer from '../features/channels/channelVideosSlice';
 
 const persistConfig = {
 	key: 'root',
 	storage: sessionStorage,
-	whitelist: ['auth', 'homeVideos', 'channelDetails', 'commentList'],
+	whitelist: [
+		'auth',
+		'homeVideos',
+		'selectedVideo',
+		'relatedVideos',
+		'channelDetails',
+		'commentList',
+		'searchedVideos',
+		'subscriptionsChannel',
+		'channelVideos',
+	],
 };
 
 const rootReducer = combineReducers({
@@ -32,6 +45,9 @@ const rootReducer = combineReducers({
 	relatedVideos: relatedVideosReducer,
 	channelDetails: channelReducer,
 	commentList: commentsReducer,
+	searchedVideos: searchedVideosReducer,
+	subscriptionsChannel: subscriptionsChannelReducer,
+	channelVideos: channelVideosReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -49,6 +65,9 @@ const store = configureStore({
 					'relatedVideos',
 					'channelDetails',
 					'commentList',
+					'searchedVideos',
+					'subscriptionsChannel',
+					'channelVideos',
 				],
 			},
 		}).concat((store) => (next) => (action) => {

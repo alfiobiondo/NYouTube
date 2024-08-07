@@ -92,11 +92,13 @@ const Video = ({ video, channelScreen }) => {
 				</span>
 				<span>{moment(publishedAt).fromNow()}</span>
 			</section>
-			<section className='video__channel'>
-				{/* <img src={channelIcon?.url} alt={channelTitle} /> */}
-				<LazyLoadImage src={channelIcon?.url} effect='blur' />
-				<p>{channelTitle}</p>
-			</section>
+			{!channelScreen && (
+				<section className='video__channel'>
+					<LazyLoadImage src={channelIcon?.url} effect='blur' />
+
+					<p>{channelTitle}</p>
+				</section>
+			)}
 		</section>
 	);
 };

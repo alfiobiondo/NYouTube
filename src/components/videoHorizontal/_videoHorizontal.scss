@@ -35,12 +35,17 @@
 	}
 
 	&__title {
-		font-size: 1rem;
+		font-size: 0.95rem;
 
 		//color: #fff;
 		letter-spacing: 0.3px;
 
 		@include line-clamp(1);
+	}
+
+	&__desc {
+		@include line-clamp(2);
+		font-size: 0.9rem;
 	}
 
 	&__channel {
@@ -53,7 +58,7 @@
 			cursor: pointer;
 		}
 		p {
-			font-size: 0.9rem;
+			font-size: 0.8rem;
 			@include line-clamp(1);
 		}
 	}
@@ -82,8 +87,8 @@
 		//   }
 
 		&__title {
-			font-size: 1rem;
-			@include line-clamp(2);
+			font-size: 0.9rem;
+			@include line-clamp(1);
 		}
 	}
 }

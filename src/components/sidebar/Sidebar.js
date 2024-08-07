@@ -13,6 +13,8 @@ import {
 
 import { logout } from '../../features/auth/authSlice';
 
+import { Link } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
 
 const Sidebar = ({ sidebar, handleToggleSidebar }) => {
@@ -23,14 +25,18 @@ const Sidebar = ({ sidebar, handleToggleSidebar }) => {
 			className={sidebar ? 'sidebar open' : 'sidebar'}
 			onClick={() => handleToggleSidebar(false)}
 		>
-			<li>
-				<MdHome size={23} />
-				<span>Home</span>
-			</li>
-			<li>
-				<MdSubscriptions size={23} />
-				<span>Subscription</span>
-			</li>
+			<Link to='/'>
+				<li>
+					<MdHome size={23} />
+					<span>Home</span>
+				</li>
+			</Link>
+			<Link to='/feed/subscriptions'>
+				<li>
+					<MdSubscriptions size={23} />
+					<span>Subscriptions</span>
+				</li>
+			</Link>
 			<li>
 				<MdThumbUp size={23} />
 				<span>Liked Video</span>
