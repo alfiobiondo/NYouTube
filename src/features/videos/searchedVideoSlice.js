@@ -3,17 +3,18 @@ import request from '../../api';
 
 export const getVideosBySearch = createAsyncThunk(
 	'searchedVideo/getVideosBySearch',
-	async (keyword, { rejectWithValue }) => {
+	async (keyword, { rejectWithValue, getState }) => {
 		try {
 			const response = await request.get('/search', {
 				params: {
 					part: 'snippet',
 					maxResults: 20,
+					pageToken: getState().searchedVideos.nextPageToken,
 					q: keyword,
 					type: 'video',
 				},
 			});
-			return response.data.items;
+			return response.data;
 		} catch (error) {
 			console.error(
 				'API Error:',
@@ -38,7 +39,8 @@ const searchedVideoSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addCase(getVideosBySearch.fulfilled, (state, action) => {
-				state.videos = action.payload;
+				state.videos = [...state.videos, ...action.payload.items];
+				state.nextPageToken = action.payload.nextPageToken;
 				state.isLoading = false;
 			})
 			.addCase(getVideosBySearch.rejected, (state, action) => {
