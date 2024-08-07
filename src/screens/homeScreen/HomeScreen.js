@@ -23,7 +23,7 @@ const HomeScreen = () => {
 	}, [dispatch]);
 
 	const fetchVideos = () => {
-		console.log('Fetching more videos');
+		//console.log('Fetching more videos');
 		if (nextPageToken) {
 			if (activeCategory === 'All') {
 				dispatch(getPopularVideos());

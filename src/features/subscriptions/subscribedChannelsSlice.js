@@ -9,12 +9,14 @@ export const getSubscribedChannels = createAsyncThunk(
 				params: {
 					part: 'snippet,contentDetails',
 					mine: true,
+					maxResults: 20,
+					pageToken: getState().subscriptionsChannel.nextPageToken,
 				},
 				headers: {
 					Authorization: `Bearer ${getState().auth.accessToken}`,
 				},
 			});
-			return response.data.items;
+			return response.data;
 		} catch (error) {
 			console.error(
 				'API Error:',
@@ -29,6 +31,7 @@ const subscriptionsChannelsSlice = createSlice({
 	name: 'subscribedChannels',
 	initialState: {
 		videos: [],
+		nextPageToken: null,
 		isLoading: false,
 		error: null,
 	},
@@ -39,7 +42,8 @@ const subscriptionsChannelsSlice = createSlice({
 			})
 			.addCase(getSubscribedChannels.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.videos = action.payload;
+				state.videos = [...state.videos, ...action.payload.items];
+				state.nextPageToken = action.payload.nextPageToken;
 			})
 			.addCase(getSubscribedChannels.rejected, (state, action) => {
 				state.isLoading = false;

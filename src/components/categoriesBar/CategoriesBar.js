@@ -32,9 +32,9 @@ const CategoriesBar = () => {
 	const dispatch = useDispatch();
 
 	const handleClick = (value) => {
-		console.log(
+		/* console.log(
 			`Clicked on ${value}, active element is ${activeElement}, fetching videos from category ${value}`
-		);
+		); */
 		setActiveElement(value);
 		dispatch(setCategory(value));
 		dispatch(getVideosByCategory(value));
