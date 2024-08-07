@@ -18,7 +18,7 @@ const HomeScreen = () => {
 	);
 
 	useEffect(() => {
-		console.log('Fetching initial videos');
+		//console.log('Fetching initial videos');
 		dispatch(getPopularVideos());
 	}, [dispatch]);
 

@@ -11,7 +11,10 @@ import { useSelector } from 'react-redux';
 const Header = ({ handleToggleSidebar }) => {
 	const [input, setInput] = useState('');
 
-	const { photoURL } = useSelector((state) => state.auth?.user);
+	const user = useSelector((state) => state.auth?.user);
+	const photoURL =
+		user?.photoURL ||
+		'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png';
 
 	const navigate = useNavigate();
 
@@ -47,7 +50,14 @@ const Header = ({ handleToggleSidebar }) => {
 			<section className='header__icons'>
 				<MdNotifications size={28} />
 				<MdApps size={28} />
-				<img src={photoURL} alt='avatar' />
+				{user ? (
+					<img src={photoURL} alt='avatar' />
+				) : (
+					<img
+						src='https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'
+						alt='default avatar'
+					/>
+				)}
 			</section>
 		</header>
 	);
