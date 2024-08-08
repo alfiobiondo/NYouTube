@@ -21,6 +21,7 @@ import commentsReducer from '../features/comments/commentsSlice';
 import searchedVideosReducer from '../features/videos/searchedVideoSlice';
 import subscriptionsChannelReducer from '../features/subscriptions/subscribedChannelsSlice';
 import channelVideosReducer from '../features/channels/channelVideosSlice';
+import reactionsVideosReducer from '../features/reactions/reactionsVideosSlice';
 
 const persistConfig = {
 	key: 'root',
@@ -35,6 +36,7 @@ const persistConfig = {
 		'searchedVideos',
 		'subscriptionsChannel',
 		'channelVideos',
+		'reactionsVideos',
 	],
 };
 
@@ -48,6 +50,7 @@ const rootReducer = combineReducers({
 	searchedVideos: searchedVideosReducer,
 	subscriptionsChannel: subscriptionsChannelReducer,
 	channelVideos: channelVideosReducer,
+	reactionsVideos: reactionsVideosReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -68,6 +71,7 @@ const store = configureStore({
 					'searchedVideos',
 					'subscriptionsChannel',
 					'channelVideos',
+					'reactionsVideos',
 				],
 			},
 		}).concat((store) => (next) => (action) => {

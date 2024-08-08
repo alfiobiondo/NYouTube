@@ -11,7 +11,12 @@ import { Col, Row } from 'react-bootstrap';
 
 import { useNavigate } from 'react-router-dom';
 
-const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
+const VideoHorizontal = ({
+	video,
+	searchScreen,
+	subScreen,
+	reactionsScreen,
+}) => {
 	const {
 		id,
 		snippet: {
@@ -33,6 +38,8 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 
 	const navigate = useNavigate();
 
+	const _videoId = id?.videoId || id;
+
 	useEffect(() => {
 		const get_video_details = async () => {
 			try {
@@ -41,7 +48,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 				} = await request.get('/videos', {
 					params: {
 						part: 'contentDetails,statistics',
-						id: id.videoId,
+						id: _videoId,
 					},
 				});
 				setDuration(items[0].contentDetails.duration);
@@ -51,7 +58,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 			}
 		};
 		if (isVideo) get_video_details();
-	}, [id, isVideo]);
+	}, [_videoId, isVideo]);
 
 	useEffect(() => {
 		const get_channel_icon = async () => {
@@ -79,7 +86,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 
 	const handleClick = () => {
 		isVideo
-			? navigate(`/watch/${id.videoId}`)
+			? navigate(`/watch/${_videoId}`)
 			: navigate(`/channel/${_channelId}`);
 	};
 
@@ -92,7 +99,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 		>
 			<Col
 				xs={6}
-				md={searchScreen || subScreen ? 4 : 6}
+				md={searchScreen || subScreen || reactionsScreen ? 4 : 6}
 				className='videoHorizontal__left'
 			>
 				<LazyLoadImage
@@ -107,7 +114,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 			</Col>
 			<Col
 				xs={6}
-				md={searchScreen || subScreen ? 8 : 6}
+				md={searchScreen || subScreen || reactionsScreen ? 8 : 6}
 				className='p-0 videoHorizontal__right'
 			>
 				<p className='mb-1 videoHorizontal__title'>{title}</p>
@@ -118,7 +125,7 @@ const VideoHorizontal = ({ video, searchScreen, subScreen }) => {
 					</section>
 				)}
 
-				{(searchScreen || subScreen) && (
+				{(searchScreen || subScreen || reactionsScreen) && (
 					<p className='mt-1 videoHorizontal__desc'>{description}</p>
 				)}
 

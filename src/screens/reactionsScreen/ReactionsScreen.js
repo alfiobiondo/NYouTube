@@ -4,23 +4,23 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import VideoHorizontal from '../../components/videoHorizontal/VideoHorizontal';
-import { getSubscribedChannels } from '../../features/subscriptions/subscribedChannelsSlice';
+import { getLikedVideos } from '../../features/reactions/reactionsVideosSlice';
 
-const SubscriptionsScreen = () => {
+const ReactionsScreen = () => {
 	const dispatch = useDispatch();
 
 	const { videos, isLoading, nextPageToken } = useSelector(
-		(state) => state.subscriptionsChannel
+		(state) => state.reactionsVideos
 	);
 
 	useEffect(() => {
-		dispatch(getSubscribedChannels());
+		dispatch(getLikedVideos());
 	}, [dispatch]);
 
 	const fetchVideos = () => {
 		//console.log('Fetching more videos');
 		if (nextPageToken) {
-			dispatch(getSubscribedChannels());
+			dispatch(getLikedVideos());
 		}
 	};
 
@@ -46,12 +46,16 @@ const SubscriptionsScreen = () => {
 								<Skeleton width='100%' height='160px' count={20} />
 							</SkeletonTheme>
 						))
-					: videos?.map((video) => (
-							<VideoHorizontal video={video} key={video.id} subScreen />
+					: videos?.map((video, index) => (
+							<VideoHorizontal
+								video={video}
+								key={`${video.id}-${index}`}
+								reactionsScreen
+							/>
 						))}
 			</InfiniteScroll>
 		</Container>
 	);
 };
 
-export default SubscriptionsScreen;
+export default ReactionsScreen;

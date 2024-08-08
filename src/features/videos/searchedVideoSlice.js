@@ -14,7 +14,8 @@ export const getVideosBySearch = createAsyncThunk(
 					type: 'video',
 				},
 			});
-			return response.data;
+			console.log(keyword);
+			return { data: response.data, keyword };
 		} catch (error) {
 			console.error(
 				'API Error:',
@@ -30,17 +31,25 @@ const searchedVideoSlice = createSlice({
 	initialState: {
 		videos: [],
 		isLoading: false,
+		keyword: null,
 		error: null,
 	},
-	reducers: {},
+	reducers: {
+		resetVideos: (state, action) => {
+			state.videos = [];
+			state.nextPageToken = null;
+			state.keyword = null;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getVideosBySearch.pending, (state) => {
 				state.isLoading = true;
 			})
 			.addCase(getVideosBySearch.fulfilled, (state, action) => {
-				state.videos = [...state.videos, ...action.payload.items];
+				state.videos = [...state.videos, ...action.payload.data.items];
 				state.nextPageToken = action.payload.nextPageToken;
+				state.keyword = action.payload.keyword;
 				state.isLoading = false;
 			})
 			.addCase(getVideosBySearch.rejected, (state, action) => {
@@ -49,5 +58,7 @@ const searchedVideoSlice = createSlice({
 			});
 	},
 });
+
+export const { resetVideos } = searchedVideoSlice.actions;
 
 export default searchedVideoSlice.reducer;
