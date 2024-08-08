@@ -12,7 +12,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const SearchScreen = () => {
 	const { query } = useParams();
-	console.log(query);
+	//console.log(query);
 	const dispatch = useDispatch();
 
 	const { videos, isLoading, nextPageToken, keyword } = useSelector(

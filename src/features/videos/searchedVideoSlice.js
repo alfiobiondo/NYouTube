@@ -48,7 +48,7 @@ const searchedVideoSlice = createSlice({
 			})
 			.addCase(getVideosBySearch.fulfilled, (state, action) => {
 				state.videos = [...state.videos, ...action.payload.data.items];
-				state.nextPageToken = action.payload.nextPageToken;
+				state.nextPageToken = action.payload.data.nextPageToken;
 				state.keyword = action.payload.keyword;
 				state.isLoading = false;
 			})
