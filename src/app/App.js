@@ -5,8 +5,8 @@ import LoginScreen from '../screens/loginScreen/LoginScreen';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import WatchScreen from '../screens/watchScreen/WatchScreen';
-import SearchScreen from '../screens/searchScreen/SearchScreen';
-import SubscriptionsScreen from '../screens/subscriptionsScreen/SubscriptionsScreen';
+import SearchScreen from '../screens/searchScreen/searchScreen';
+import SubscriptionsScreen from '../screens/subscriptionsScreen/subscriptionsScreen';
 import ChannelScreen from '../screens/channelScreen/channelScreen';
 import ReactionsScreen from '../screens/reactionsScreen/ReactionsScreen';
 
