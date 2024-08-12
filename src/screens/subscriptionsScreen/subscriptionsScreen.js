@@ -5,6 +5,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import VideoHorizontal from '../../components/videoHorizontal/VideoHorizontal';
 import { getSubscribedChannels } from '../../features/subscriptions/subscribedChannelsSlice';
+import { Helmet } from 'react-helmet';
 
 const SubscriptionsScreen = () => {
 	const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const SubscriptionsScreen = () => {
 
 	return (
 		<Container fluid>
+			<Helmet>
+				<title>Subscriptions</title>
+			</Helmet>
 			<InfiniteScroll
 				dataLength={videos.length}
 				next={fetchVideos}

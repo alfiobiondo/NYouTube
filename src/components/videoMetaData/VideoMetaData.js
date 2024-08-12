@@ -26,6 +26,7 @@ import {
 	dislikeVideo,
 	removeRate,
 } from '../../features/reactions/reactionsVideosSlice';
+import HelmetCustom from '../helmet/HelmetCustom';
 
 const VideoMetaData = ({ video: { snippet, statistics }, videoId }) => {
 	const { channelId, channelTitle, description, title, publishedAt } = snippet;
@@ -73,6 +74,7 @@ const VideoMetaData = ({ video: { snippet, statistics }, videoId }) => {
 
 	return (
 		<section className='py-2 videoMetaData'>
+			<HelmetCustom title={title} description={description} />
 			<section className='videoMetaData__top'>
 				<h5>{title}</h5>
 				<section className='py-1 d-flex justify-content-between align-items-center'>

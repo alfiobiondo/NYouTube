@@ -8,6 +8,7 @@ import VideoHorizontal from '../../components/videoHorizontal/VideoHorizontal';
 import VideoMetaData from '../../components/videoMetaData/VideoMetaData';
 import { getVideosById } from '../../features/videos/selectedVideoSlice';
 import { getRelatedVideos } from '../../features/videos/relatedVideosSlice';
+
 import './_watchScreen.scss';
 
 const WatchScreen = () => {

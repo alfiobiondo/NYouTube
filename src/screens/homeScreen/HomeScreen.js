@@ -9,6 +9,7 @@ import {
 } from '../../features/videos/homeVideosSlice';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SkeletonVideo from '../../components/skeletons/SkeletonVideo';
+import { Helmet } from 'react-helmet';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -35,6 +36,9 @@ const HomeScreen = () => {
 
 	return (
 		<Container>
+			<Helmet>
+				<title>Home - {activeCategory}</title>
+			</Helmet>
 			<CategoriesBar />
 			<InfiniteScroll
 				dataLength={videos.length}

@@ -5,6 +5,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import VideoHorizontal from '../../components/videoHorizontal/VideoHorizontal';
 import { getLikedVideos } from '../../features/reactions/reactionsVideosSlice';
+import { Helmet } from 'react-helmet';
 
 const ReactionsScreen = () => {
 	const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const ReactionsScreen = () => {
 
 	return (
 		<Container fluid>
+			<Helmet>
+				<title>Reactions</title>
+			</Helmet>
 			<InfiniteScroll
 				dataLength={videos.length}
 				next={fetchVideos}
