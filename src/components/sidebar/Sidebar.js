@@ -5,10 +5,7 @@ import {
 	MdSubscriptions,
 	MdExitToApp,
 	MdThumbUp,
-	MdHistory,
-	MdLibraryBooks,
 	MdHome,
-	MdSentimentDissatisfied,
 } from 'react-icons/md';
 
 import { logout } from '../../features/auth/authSlice';
@@ -43,18 +40,6 @@ const Sidebar = ({ sidebar, handleToggleSidebar }) => {
 					<span>Liked Video</span>
 				</li>
 			</Link>
-			<li>
-				<MdHistory size={23} />
-				<span>History</span>
-			</li>
-			<li>
-				<MdLibraryBooks size={23} />
-				<span>Library</span>
-			</li>
-			<li>
-				<MdSentimentDissatisfied size={23} />
-				<span>I don't Know</span>
-			</li>
 
 			<hr />
 

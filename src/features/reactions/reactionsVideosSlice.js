@@ -28,6 +28,78 @@ export const getLikedVideos = createAsyncThunk(
 	}
 );
 
+export const likeVideo = createAsyncThunk(
+	'reactionsVideos/likeVideo',
+	async (id, { rejectWithValue, getState }) => {
+		try {
+			const response = await request.post(
+				`/videos/rate?id=${id}&rating=like`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${getState().auth.accessToken}`, // Use accessToken for authorization
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const dislikeVideo = createAsyncThunk(
+	'reactionsVideos/dislikeVideo',
+	async (id, { rejectWithValue, getState }) => {
+		try {
+			const response = await request.post(
+				`/videos/rate?id=${id}&rating=dislike`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${getState().auth.accessToken}`, // Use accessToken for authorization
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const removeRate = createAsyncThunk(
+	'reactionsVideos/removeRate',
+	async (id, { rejectWithValue, getState }) => {
+		try {
+			const response = await request.post(
+				`/videos/rate?id=${id}&rating=none`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${getState().auth.accessToken}`, // Use accessToken for authorization
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			console.error(
+				'API Error:',
+				error.response ? error.response.data : error.message
+			);
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
 const reactionsVideosSlice = createSlice({
 	name: 'reactionsVideos',
 	initialState: {

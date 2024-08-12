@@ -35,24 +35,20 @@ const ReactionsScreen = () => {
 				}
 				className='row'
 			>
-				{isLoading && videos.length === 0
-					? // Show skeletons if loading and no videos are loaded yet
-						[...Array(20)].map((_, index) => (
-							<SkeletonTheme
-								color='#343a40'
-								highlightColor='#3c4147'
-								key={index}
-							>
-								<Skeleton width='100%' height='160px' count={20} />
-							</SkeletonTheme>
-						))
-					: videos?.map((video, index) => (
-							<VideoHorizontal
-								video={video}
-								key={`${video.id}-${index}`}
-								reactionsScreen
-							/>
-						))}
+				{isLoading && videos.length === 0 ? (
+					// Show skeletons if loading and no videos are loaded yet
+					<SkeletonTheme color='#343a40' highlightColor='#3c4147'>
+						<Skeleton width='100%' height='160px' count={20} />
+					</SkeletonTheme>
+				) : (
+					videos?.map((video, index) => (
+						<VideoHorizontal
+							video={video}
+							key={`${video.id}-${index}`}
+							reactionsScreen
+						/>
+					))
+				)}
 			</InfiniteScroll>
 		</Container>
 	);
