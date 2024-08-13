@@ -2,7 +2,7 @@
 
 NYouTube is a youtube clone made with react, redux, firebase and Youtube API.
 
-![Image](./public/nYouTubeLogo.png)
+![Image](./public/nYouTubeLogo.jpg)
 
 ## The project is deployed on Firebase
 
