@@ -80,6 +80,7 @@ const store = configureStore({
 			}
 			return next(action);
 		}),
+	devTools: process.env.NODE_ENV === 'development',
 });
 
 const persistor = persistStore(store);
